@@ -18,22 +18,20 @@ class AdmitCardController extends Controller
 
         // 1. Check if the file already exists in storage
         if (file_exists($fullPath)) {
-            // Increment download count
+            // Increment student download count
             $student->increment('ap_isdownload');
             
-            // Log the download activity if needed
-            AdmitCard::create([
-                'student_id' => $student->id,
-                'file_path' => $fileName,
-                'generated_by' => 'student_portal_cached',
-                'generated_at' => now(),
-            ]);
+            // Find or create the admit card record to track downloads
+            $admitCard = AdmitCard::firstOrCreate(
+                ['student_id' => $student->id, 'file_path' => $fileName],
+                ['generated_by' => 'system', 'generated_at' => now()]
+            );
+            $admitCard->increment('download_count');
 
             return response()->download($fullPath, "Admit_Card_{$student->student_id}.pdf");
         }
 
         // 2. If not exists, generate, save and then return
-        // Ensure directory exists
         if (!file_exists(dirname($fullPath))) {
             mkdir(dirname($fullPath), 0755, true);
         }
@@ -43,15 +41,16 @@ class AdmitCardController extends Controller
             ->disk('public')
             ->save($fileName);
 
-        // Log the generation
+        // Create admit card record
         AdmitCard::create([
             'student_id' => $student->id,
             'file_path' => $fileName,
             'generated_by' => 'student_portal_on_the_fly',
             'generated_at' => now(),
+            'download_count' => 1,
         ]);
 
-        // Increment download count
+        // Increment student download count
         $student->increment('ap_isdownload');
 
         return response()->download($fullPath, "Admit_Card_{$student->student_id}.pdf");
