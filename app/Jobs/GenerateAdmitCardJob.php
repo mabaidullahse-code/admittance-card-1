@@ -9,9 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Redis;
+use Spatie\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\Log;
 
 class GenerateAdmitCardJob implements ShouldQueue
@@ -20,7 +18,7 @@ class GenerateAdmitCardJob implements ShouldQueue
 
     protected $studentId;
     protected $userId;
-    public $timeout = 120;
+    public $timeout = 300; 
     public $tries = 3;
 
     public function __construct($studentId, $userId = null)
@@ -31,43 +29,36 @@ class GenerateAdmitCardJob implements ShouldQueue
 
     public function handle()
     {
-        $lockKey = "admit_card_generation_{$this->studentId}";
-        $lock = Redis::lock($lockKey, 60);
-        
-        if (!$lock->get()) {
-            Log::warning("Admit card generation already in progress for student: {$this->studentId}");
-            return;
-        }
-        
         try {
             $student = Student::findOrFail($this->studentId);
+            $fileName = "admit_cards/Admit_Card_{$student->student_id}.pdf";
+            $fullPath = storage_path("app/public/{$fileName}");
+
+            // Ensure directory exists
+            if (!file_exists(dirname($fullPath))) {
+                mkdir(dirname($fullPath), 0755, true);
+            }
             
-            // Generate PDF
-            $pdf = Pdf::loadView('pdf.admit-card', ['student' => $student]);
-            $pdf->setPaper('a4', 'portrait');
-            
-            $fileName = "admit_cards/admit_card_{$student->student_id}_{$student->id}.pdf";
-            Storage::disk('public')->put($fileName, $pdf->output());
-            
-            // Update student record
-            $student->update(['admit_card_path' => $fileName]);
+            // Generate and Save PDF using Spatie PDF (Browsershot)
+            Pdf::view('pdf.admit-card', ['student' => $student])
+                ->format('a4')
+                ->disk('public')
+                ->save($fileName);
             
             // Create admit card record
             AdmitCard::create([
                 'student_id' => $student->id,
                 'file_path' => $fileName,
-                'generated_by' => $this->userId ?? 'system',
+                'generated_by' => $this->userId ?? 'background_job',
                 'generated_at' => now(),
                 'download_count' => 0,
             ]);
             
-            Log::info("Admit card generated successfully for student: {$student->student_id}");
+            Log::info("Admit card generated successfully via job for student: {$student->student_id}");
             
         } catch (\Exception $e) {
             Log::error("Failed to generate admit card for student {$this->studentId}: " . $e->getMessage());
             throw $e;
-        } finally {
-            $lock->release();
         }
     }
     

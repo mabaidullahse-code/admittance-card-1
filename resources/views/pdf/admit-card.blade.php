@@ -6,9 +6,7 @@
     <title>MDCAT Admittance Card - UHS Lahore (Complete Instructions)</title>
     <!-- Tailwind CSS v3 -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+ 
     <style>
         @page {
             size: A4;
