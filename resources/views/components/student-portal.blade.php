@@ -367,9 +367,9 @@ new class extends Component
                         <span>Download Admittance Card (PDF)</span>
                     </a>
                     
-                    <button wire:click="$set('show_complaint_form', true)" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-bold py-4 px-8 rounded-2xl transition-all">
+                    <!-- <button wire:click="$set('show_complaint_form', true)" class="bg-white border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-bold py-4 px-8 rounded-2xl transition-all">
                         Request Correction
-                    </button>
+                    </button> -->
                     
                     <button wire:click="resetSearch" class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-4 px-6 rounded-2xl transition-all">
                         Back

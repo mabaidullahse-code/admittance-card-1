@@ -10,30 +10,30 @@
     <style>
         @page {
             size: A4;
-            margin: 0.5cm 0.6cm;
+            margin: 0.4cm 0.5cm;
         }
         body {
             background: white;
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 10px;
         }
 
         .urdu-text {
             font-family: 'Noto Nastaliq Urdu', serif;
             direction: rtl;
             text-align: justify;
-            line-height: 2;
+            line-height: 1.8;
             font-size: 11px;
-            word-spacing: 0.15em;
+            word-spacing: 2px;
         }
         .instruction-eng {
-            line-height: 2;
-            word-spacing: 0.15em;
+            line-height: 1.8;
+            word-spacing: 2px;
             text-align: justify;
             font-size: 11px;
         }
-        }
+        
         /* Force print colors */
         @media print {
             .print-bg-black {
@@ -65,11 +65,11 @@
 
     <div class="w-full break-avoid">
         <!-- ========== HEADER ========== -->
-        <div class="flex items-center justify-between mb-2 gap-2">
+        <div class="flex items-center justify-between mb-1 gap-2">
             <!-- Left Logo UHS -->
-            <div class="w-16 flex-shrink-0">
-                <div class="bg-gray-50 rounded-sm p-0.5 flex justify-center items-center h-12">
-                    <img class="max-h-14 w-auto" src="{{ storage_path('app/public/logouhs.png') }}" alt="UHS">
+            <div class="w-16 h-16 flex-shrink-0">
+                <div class="bg-gray-50 rounded-sm p-1 flex justify-center h-14 items-center overflow-visible">
+                    <img style="height: 52px; width: 52px; display: block;" src="{{ storage_path('app/public/logouhs.png') }}" alt="UHS">
                 </div>
             </div>
             <div class="flex-1 text-center leading-tight">
@@ -78,15 +78,15 @@
                 <p class="text-[9px] font-bold text-black">Admittance Card (for Candidate)</p>
             </div>
             <!-- Right Logo PMDC -->
-            <div class="w-16 flex-shrink-0 flex justify-end">
-                <div class="bg-gray-50 rounded-sm p-0.5 flex justify-center items-center h-12">
-                    <img class="max-h-14 w-auto" src="{{ storage_path('app/public/PMDC_Logo.png') }}" alt="PMDC">
+            <div class="w-16 h-16 flex-shrink-0 flex justify-end">
+                <div class="bg-gray-50 rounded-sm p-1 flex h-14 justify-center items-center overflow-visible">
+                    <img style="height: 56px; width: 56px; display: block;" src="{{ storage_path('app/public/PMDC_Logo.png') }}" alt="PMDC">
                 </div>
             </div>
         </div>
 
         <!-- ========== QR + ROLL + CENTRE + PHOTO ========== -->
-        <div class="flex flex-nowrap gap-3 items-center mb-4">
+        <div class="flex flex-nowrap gap-3 items-center mb-2">
             <!-- QR -->
             <div class="w-[85px] h-[85px] flex-shrink-0 bg-white flex items-center justify-center" style="border: 1px solid black !important; padding: 4px;">
                 @php
@@ -117,7 +117,7 @@
         </div>
 
         <!-- ========== CANDIDATE DETAILS ========== -->
-        <div class="mb-2 text-[9.5px]">
+        <div class="mb-2 text-[10px]">
             <div class="flex border-b border-black py-0.5">
                 <div class="w-1/3 font-bold">Full Name:</div>
                 <div class="w-2/3">{{ $student->student_name }}</div>
@@ -133,9 +133,9 @@
         </div>
 
         <!-- ========== URDU INSTRUCTIONS (FULL TEXT, NO LINE REMOVED) ========== -->
-        <div class="bg-black text-white text-center font-bold py-0.5 text-[14px] tracking-wide mt-0.5">اہم ہدایات</div>
-        <div class="urdu-text px-1 py-1 bg-gray-50 rounded-sm mb-1">
-            <ol class="list-decimal pr-4 space-y-1">
+        <div class="bg-black text-white text-center font-bold py-1 text-[12px] tracking-wide mt-0.5">اہم ہدایات</div>
+        <div class="urdu-text px-1 py-1 bg-gray-50 rounded-sm mb-1 text-[11.5px]">
+            <ol class="list-decimal pr-4 space-y-2">
                 <li>
                     <span class="font-bold">شناختی دستاویزات:</span>
                     ہر امیدوار پر لازم ہے کہ وہ اس ایڈمٹنس کارڈ کی پرنٹ شدہ کاپی کے ساتھ درج ذیل میں سے کوئی ایک اصل شناختی دستاویز لازمی طور پر ہمراہ لائے: قومی شناختی کارڈ (CNIC) یا 18 سال سے کم عمر کا جیووینائل کارڈ یا سمندر پار پاکستانیوں کا شناختی کارڈ (NICOP) یا فیملی رجسٹریشن سرٹیفکیٹ (FRC) جو نادرا سے جاری شدہ ہو یا قومی پاسپورٹ، وزارت داخلہ سے جاری ہوا ہو۔ وہ امیدوار جن کے پاس صرف فارم 'ب' ہو، وہ اپنے اصلی میٹرک یا ایف۔ایس۔سی کا سرٹیفکیٹ بھی ساتھ لائیں۔ مذکورہ دستاویزات کے بغیر کسی امیدوار کو امتحان میں شرکت کی اجازت نہیں دی جائے گی۔
@@ -173,9 +173,9 @@
         </div>
 
         <!-- ========== ENGLISH INSTRUCTIONS (COMPLETE, ALL LINES PRESERVED) ========== -->
-        <div class="bg-black text-white text-center font-bold py-0.5 text-[14px] tracking-wide mt-1">IMPORTANT INSTRUCTIONS</div>
-        <div class="instruction-eng px-2 py-1 bg-gray-50 rounded-sm mb-1 text-[12px]">
-            <ol class="list-decimal pl-4 space-y-0.5">
+        <div class="bg-black text-white text-center font-bold py-1 text-[12px] tracking-wide mt-0.5">IMPORTANT INSTRUCTIONS</div>
+        <div class="instruction-eng px-2 py-0.5 bg-gray-50 rounded-sm mb-1 text-[11.5px]">
+            <ol class="list-decimal pl-4 space-y-2">
                 <li>
                     <strong>Mandatory Identification:</strong>
                     Every candidate shall bring a printed copy of this Admittance Card along with one of the following original identification documents: CNIC, Juvenile Card (for age under 18), NICOP, Family Registration Certificate (FRC) issued by NADRA, or Passport issued by the Directorate General of Immigration and Passports, Ministry of Interior. Candidates who possess only a "B-Form" must also bring their original Matriculation or F.Sc. certificate. No candidate shall be permitted to enter or appear in the examination without these documents.
