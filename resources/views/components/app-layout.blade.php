@@ -24,12 +24,10 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l9-5-9-5-9 5 9 5zm0 0v6m0-6L3 9m18 0l-9 5" />
-                            </svg>
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-gray-200">
+                            <img src="{{ asset('logouhs.png') }}" alt="Logo" class="h-10 w-auto">
                         </div>
-                        <h1 class="text-xl font-bold text-gray-900 tracking-tight">University Admission Portal</h1>
+                        <h1 class="text-xl font-bold text-gray-900 tracking-tight">University of Health Sciences</h1>
                     </div>
                 </div>
             </div>
