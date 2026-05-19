@@ -319,11 +319,16 @@ new class extends Component
                     <div class="relative">
                         <div class="w-40 h-48 rounded-2xl overflow-hidden border-4 border-white shadow-lg bg-gray-100">
                             @php
-                                $picturePath = $student->picture_path;
+                                $pictureUrl = $student->picture_path;
                                 // Build a cache buster from the file's last modified time
-                                $localFile = public_path('storage/' . ltrim(str_replace('/storage/', '', $picturePath), '/'));
+                                $parsedPath = parse_url($pictureUrl, PHP_URL_PATH);
+                                $cleanPath = ltrim($parsedPath ?: $pictureUrl, '/');
+                                if (str_starts_with($cleanPath, 'storage/')) {
+                                    $cleanPath = substr($cleanPath, 8);
+                                }
+                                $localFile = storage_path('app/public/' . $cleanPath);
                                 $cacheBuster = file_exists($localFile) ? filemtime($localFile) : time();
-                                $pictureUrl = $picturePath . '?v=' . $cacheBuster;
+                                $pictureUrl = $pictureUrl . '?v=' . $cacheBuster;
                             @endphp
                             <img src="{{ $pictureUrl }}" alt="{{ $student->student_name }}" class="w-full h-full object-cover">
                         </div>

@@ -44,23 +44,25 @@ class Student extends Model
     {
         // Check if DB column has a value
         if ($dbPath = $this->attributes['picture_path'] ?? null) {
-            // If it starts with mdcatimages/, add storage/
-            if (str_starts_with($dbPath, 'mdcatimages/')) {
-                return '/storage/' . $dbPath;
+            // If it is already a full URL, return it
+            if (str_starts_with($dbPath, 'http://') || str_starts_with($dbPath, 'https://')) {
+                return $dbPath;
             }
-            // If it's a full storage path
-            if (str_contains($dbPath, 'storage/app/public/')) {
-                return asset(str_replace('storage/app/public/', 'storage/', $dbPath));
+
+            // Normalize path by stripping potential web prefixes
+            $cleanPath = ltrim($dbPath, '/');
+            if (str_starts_with($cleanPath, 'storage/')) {
+                $cleanPath = substr($cleanPath, 8); // remove 'storage/'
             }
-            // Ensure path has leading slash if it starts with storage/
-            if (str_starts_with($dbPath, 'storage/')) {
-                return '/' . $dbPath;
-            }
-            return $dbPath;
+
+            return asset('storage/' . $cleanPath);
         }
 
         if ($this->profile_picture) {
-            return $this->profile_picture;
+            if (str_starts_with($this->profile_picture, 'http://') || str_starts_with($this->profile_picture, 'https://')) {
+                return $this->profile_picture;
+            }
+            return asset('storage/' . ltrim($this->profile_picture, '/'));
         }
 
         $extensions = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP'];
