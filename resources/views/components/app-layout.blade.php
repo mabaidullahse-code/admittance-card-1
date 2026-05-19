@@ -25,7 +25,7 @@
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-gray-200">
-                            <img src="{{ asset('logouhs.png') }}" alt="Logo" class="h-10 w-auto">
+                            <img src="{{ asset('storage/logouhs.png') }}" alt="Logo" class="h-10 w-auto">
                         </div>
                         <h1 class="text-xl font-bold text-gray-900 tracking-tight">University of Health Sciences</h1>
                     </div>

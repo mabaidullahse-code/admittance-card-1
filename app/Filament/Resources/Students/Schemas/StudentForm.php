@@ -59,7 +59,6 @@ class StudentForm
                     ->schema([
                         TextInput::make('student_id')
                             ->required()
-                            ->disabled()
                             ->label('Candidate ID'),
                         TextInput::make('student_name')
                             ->required(),

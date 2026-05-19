@@ -52,6 +52,10 @@ class Student extends Model
             if (str_contains($dbPath, 'storage/app/public/')) {
                 return asset(str_replace('storage/app/public/', 'storage/', $dbPath));
             }
+            // Ensure path has leading slash if it starts with storage/
+            if (str_starts_with($dbPath, 'storage/')) {
+                return '/' . $dbPath;
+            }
             return $dbPath;
         }
 
@@ -76,6 +80,18 @@ class Student extends Model
     {
         // If DB has a path
         if ($dbPath = $this->attributes['picture_path'] ?? null) {
+            // Normalize path by stripping potential web prefixes
+            $cleanPath = ltrim($dbPath, '/');
+            if (str_starts_with($cleanPath, 'storage/')) {
+                $cleanPath = substr($cleanPath, 8); // remove 'storage/'
+            }
+
+            // Check if it exists in storage/app/public/
+            $publicStoragePath = storage_path('app/public/' . $cleanPath);
+            if (file_exists($publicStoragePath)) {
+                return $publicStoragePath;
+            }
+
             // If it's relative like mdcatimages/123.jpg
             if (file_exists(storage_path('app/public/' . $dbPath))) {
                 return storage_path('app/public/' . $dbPath);
