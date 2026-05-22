@@ -39,6 +39,18 @@ class Student extends Model
         return $this->hasMany(AdmitCard::class);
     }
 
+    // Mutator to ensure 'paid' is never null
+    public function setPaidAttribute($value)
+    {
+        $this->attributes['paid'] = is_null($value) ? false : filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    // Mutator to ensure 'ap_isdownload' is never null
+    public function setApIsdownloadAttribute($value)
+    {
+        $this->attributes['ap_isdownload'] = is_null($value) ? '0' : (string)$value;
+    }
+
     // Get picture path from local folder or DB for web
     public function getPicturePathAttribute()
     {
